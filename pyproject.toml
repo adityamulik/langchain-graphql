@@ -21,6 +21,12 @@ disallow_untyped_defs = "True"
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
 langchain-core = "^0.3.15"
+gql = "^4.0.0"
+langchain-community = "^0.3.29"
+langgraph = "^0.6.7"
+langchain-google-genai = "^2.1.12"
+jq = "^1.10.0"
+langchain-ollama = "^0.3.8"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "T201"]

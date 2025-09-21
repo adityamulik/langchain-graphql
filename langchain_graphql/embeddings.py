@@ -1,5 +1,6 @@
 from typing import List
 
+import requests
 from langchain_core.embeddings import Embeddings
 
 
@@ -74,13 +75,32 @@ class GraphQLEmbeddings(Embeddings):
     def __init__(self, model: str):
         self.model = model
 
-    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+    def embed_documents(self, reponse: dict) -> List[List[float]]:
         """Embed search docs."""
         return [[0.5, 0.6, 0.7] for _ in texts]
 
     def embed_query(self, text: str) -> List[float]:
         """Embed query text."""
-        return self.embed_documents([text])[0]
+        response = requests.post(
+            "https://api.cartql.com/graphql",
+            json={
+                "query": """
+                    query {
+                        __schema {
+                            types {
+                            fields {
+                                name
+                                description
+                            }
+                            }
+                        }
+                    }
+                """,
+                "variables": {"input": text, "model": self.model},
+            },
+            # headers={"Authorization": f"Bearer YOUR_API_KEY"},
+        )
+        return self.embed_documents(response)
 
     # optional: add custom async implementations here
     # you can also delete these, and the base class will

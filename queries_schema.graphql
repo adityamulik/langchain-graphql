@@ -1,0 +1,82 @@
+{
+  __schema {
+    queryType {
+      fields {
+        name
+        description
+        args {
+          name
+          description
+          defaultValue
+          type {
+            ...TypeRef
+          }
+        }
+        type {
+          ...TypeRef
+        }
+      }
+    }
+  }
+}
+
+fragment TypeRef on __Type {
+  kind
+  name
+  ofType {
+    kind
+    name
+    ofType {
+      kind
+      name
+      ofType {
+        kind
+        name
+      }
+    }
+  }
+  fields {
+    name
+    description
+    args {
+      name
+      type {
+        kind
+        name
+        ofType {
+          kind
+          name
+        }
+      }
+    }
+    type {
+      kind
+      name
+      ofType {
+        kind
+        name
+      }
+    }
+  }
+  inputFields {
+    name
+    description
+    type {
+      kind
+      name
+      ofType {
+        kind
+        name
+      }
+    }
+    defaultValue
+  }
+  enumValues {
+    name
+    description
+  }
+  possibleTypes {
+    name
+    kind
+  }
+}
