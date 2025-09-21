@@ -6,7 +6,7 @@ import json
 from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_community.document_loaders import JSONLoader
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from prompt import GRAPHQL_QUERY_GENERATOR_PROMPT, GRAPHQL_API_CALL_PROMPT, SUPERVISTOR_PROMPT, STRUCTURED_RESPONSE_OUTPUT
+from prompt import GRAPHQL_QUERY_GENERATOR_PROMPT, GRAPHQL_API_CALL_PROMPT, SUPERVISTOR_PROMPT
 from langchain_core.messages import convert_to_messages
 
 dotenv.load_dotenv()
@@ -69,15 +69,8 @@ graphql_query_generator = create_react_agent(
     name="generate_graphql_query"
 )
 
-graphql_structured_output = create_react_agent(
-    model="ollama:llama3.1",
-    tools=[is_valid_json],
-    prompt=STRUCTURED_RESPONSE_OUTPUT,
-    name="graphql_structured_output"
-)
-
 supervisor = create_supervisor(
-    agents=[graphql_query_generator, graphql_query_call, graphql_structured_output],
+    agents=[graphql_query_generator, graphql_query_call],
     model=ChatOllama(model="llama3.1"),
     prompt=SUPERVISTOR_PROMPT
 ).compile()
@@ -106,7 +99,7 @@ for chunk in supervisor.stream(
         "messages": [
             {
                 "role": "user",
-                "content": "find a vehicle from star wars with name that includes 'Speeder' and return its id, name, and pilots { id, name }"
+                "content": "generate a Graphql query to find all planets in the star wars universe"
             }
         ]
     }

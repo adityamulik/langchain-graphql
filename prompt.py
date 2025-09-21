@@ -19,17 +19,6 @@ Notes:
 - Return structured information: {"query": <original_query>, "response": <full_response>, "status": "ok"|"error"}.
 """
 
-STRUCTURED_RESPONSE_OUTPUT="""
-You are the final agent in the chain. You will receive a structured response from the supervisor containing either a successful GraphQL query execution or a final failure report.
-
-Do the following:
-1. Call the tool `is_valid_json` with the supervisor's structured response to confirm it is valid JSON.
-2. If `is_valid_json` returns true, parse and return the JSON object as the final output.
-3. If `is_valid_json` reports invalid JSON, return an error message describing that the supervisor's response is not valid JSON and include the raw response.
-
-Return either the parsed JSON object (on success) or an error object: {"status":"error","message":<description>,"raw":<raw_response>}.
-"""
-
 SUPERVISTOR_PROMPT="""
 You are the supervisor orchestrating two agents: `graphql_query_generator` and `graphql_query_call`.
 
